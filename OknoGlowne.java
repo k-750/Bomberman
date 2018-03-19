@@ -1,6 +1,7 @@
 import java.awt.Color;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
@@ -8,6 +9,11 @@ public class OknoGlowne extends JFrame
 {
 	
 	private int iloscPunktow;
+	
+	/**
+	 * wyświetla ilość punktów 	
+	 */
+	private JLabel labelPunkty;
 	
 	/**
 	 * panel z punktami i opisami
@@ -30,8 +36,10 @@ public class OknoGlowne extends JFrame
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		panelGorny = new JPanel();
-		panelGorny.setBounds(10,10,780,40);
+		panelGorny.setBounds(10,10,780,30);
 		panelGorny.setBackground(Color.WHITE);
+			labelPunkty = new JLabel("Punkty: "+iloscPunktow);
+			panelGorny.add(labelPunkty);
 		add(panelGorny);
 		
 		panelDolny = new JPanel();

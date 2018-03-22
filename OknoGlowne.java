@@ -14,13 +14,14 @@ import javax.swing.event.AncestorListener;
 
 public class OknoGlowne extends JFrame implements ActionListener
 {
-	static OknoGlowne oknoGlowne;
-	JPanel tlo = new JPanel();
-	JButton czerwony = new JButton("przetnij");
-	final JLabel obrazek = new JLabel(new ImageIcon("bomba.jpeg"));
-	JButton niebieski = new JButton("przetnij");
-	JLabel labelWyniku = new JLabel();
-	JButton sprobuj = new JButton("Spróbuj jeszcze raz");
+	private static OknoGlowne oknoGlowne;
+	private JPanel tlo = new JPanel();
+	private JButton czerwony = new JButton("przetnij");
+	private final JLabel obrazek = new JLabel(new ImageIcon("bomba.jpeg"));
+	private JButton niebieski = new JButton("przetnij");
+	private JLabel labelWyniku = new JLabel();
+	private JButton sprobuj = new JButton("Spróbuj jeszcze raz");
+	private Losuj losuj = new Losuj();
 	
 	public OknoGlowne()
 	{
@@ -51,12 +52,52 @@ public class OknoGlowne extends JFrame implements ActionListener
 		oknoGlowne = new OknoGlowne();
 
 	}
+	
+	public void tloSetVisible(boolean v)
+	{
+		tlo.setVisible(v);
+	}
+	
+	public void czerwonySetVisible(boolean v)
+	{
+		czerwony.setVisible(v);
+	}
+	
+	public void obrazekSetVisible(boolean v)
+	{
+		obrazek.setVisible(v);
+	}
+	
+	public void niebieskiSetVisible(boolean v)
+	{
+		niebieski.setVisible(v);
+	}
+	
+	public void labelWynikuSetVisible(boolean v)
+	{
+		labelWyniku.setVisible(v);
+	}
+	
+	public void labelWynikuSetText(String t)
+	{
+		labelWyniku.setText(t);
+	}
+	
+	public void sprobujSetVisible(boolean v)
+	{
+		sprobuj.setVisible(v);
+	}
+	
+	public void sprobujSetBackground(Color c)
+	{
+		sprobuj.setBackground(c);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent a)
 	{
 		Object source = a.getSource();
-		Losuj losuj = new Losuj();
+		losuj.losuj();
 		if (source.equals(czerwony))
 			{
 			if (losuj.isCzerwony() == true) Wynik.wynik(true, oknoGlowne); else Wynik.wynik(false, oknoGlowne);

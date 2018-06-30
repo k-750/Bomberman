@@ -3,25 +3,28 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
-public class OknoGlowne extends JFrame implements ActionListener
+public class View extends JFrame implements ActionListener
 {
-	private static OknoGlowne oknoGlowne;
 	private JPanel tlo = new JPanel();
 	private JButton czerwony = new JButton("przetnij");
 	private final JLabel obrazek = new JLabel(new ImageIcon("bomba.jpeg"));
 	private JButton niebieski = new JButton("przetnij");
 	private JLabel labelWyniku = new JLabel();
 	private JButton sprobuj = new JButton("Spróbuj jeszcze raz");
-	private Losuj losuj = new Losuj();
 	
-	public OknoGlowne()
+	private ArrayList<Observer> observers = new ArrayList<Observer>();
+	
+	private Object source;
+	
+	public View()
 	{
 		super("Bomberman");
 		setSize(500,280);
@@ -43,12 +46,6 @@ public class OknoGlowne extends JFrame implements ActionListener
 		add(sprobuj);
 		sprobuj.addActionListener(this);
 		sprobuj.setVisible(false);
-	}
-
-	public static void main(String[] args)
-	{
-		oknoGlowne = new OknoGlowne();
-
 	}
 	
 	public void tloSetVisible(boolean v)
@@ -90,23 +87,25 @@ public class OknoGlowne extends JFrame implements ActionListener
 	{
 		sprobuj.setBackground(c);
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent a)
+	
+	public void addObserver(Observer o)
 	{
-		Object source = a.getSource();
-		losuj.losuj();
-		if (source.equals(czerwony))
-			{
-			if (losuj.isCzerwony() == true) Wynik.wynik(true, oknoGlowne); else Wynik.wynik(false, oknoGlowne);
-			if (losuj.isNiebieski() == true) Wynik.wynik(true, oknoGlowne); else Wynik.wynik(false, oknoGlowne);
-			}
-		if (source.equals(niebieski))
-			{
-			if (losuj.isNiebieski() == true) Wynik.wynik(true, oknoGlowne); else Wynik.wynik(false, oknoGlowne);
-			if (losuj.isCzerwony() == true) Wynik.wynik(true, oknoGlowne); else Wynik.wynik(false, oknoGlowne);			
-			}
-		if (source.equals(sprobuj)) Wynik.reset(oknoGlowne);
+		observers.add(o);
 	}
 	
+	public void notifyObservers()
+	{
+		for (Observer o : observers)
+		{
+			o.update(source,czerwony,niebieski,sprobuj);
+		}
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent event)
+	{
+		source = event.getSource();		
+		notifyObservers();
+	}
+
 }
